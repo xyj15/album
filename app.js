@@ -7,6 +7,13 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var album=require('./routes/album');
+var friend=require('./routes/friend');
+var home=require('./routes/home');
+var register=require('./routes/register');
+var onephoto=require('./routes/onephoto');
+var photo=require('./routes/photo');
+var upload=require('./routes/upload');
 
 var app = express();
 
@@ -24,6 +31,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/album',album);
+app.use('/friend',friend);
+app.use('/home',home);
+app.use('/register',register);
+app.use('/onephoto',onephoto);
+app.use('/photo',photo);
+app.use('/upload',upload);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

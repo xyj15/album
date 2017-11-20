@@ -1,0 +1,38 @@
+.album{
+    height: 200px;
+    width: 200px;
+}
+.btn{
+    background-color: transparent;
+    color: #4bce93;
+    font-size: 20px;
+}
+.row{
+    text-align: center;
+}
+
+.btn:hover{
+    color: #ffbbbc;
+
+}
+.jumbotron{
+    text-align: center;
+    background: #50a3a2;
+    background: -webkit-linear-gradient(top left, #50a3a2 0%, #53e3a6 100%);
+    background: linear-gradient(to bottom right, #50a3a2 0%, #53e3a6 100%);
+color: white;
+}
+#operate{
+    background-color: #4bce93;
+    color: white;
+    width: 180px;
+    font-size: 16px;
+    margin: 20px;
+    padding:1em;
+    border:1px solid #dddddd;
+}
+#operate:hover{
+    background-color: #4bb57a;
+    color: #ffbbbc;
+
+}
