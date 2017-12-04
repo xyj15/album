@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>注册</title>
     <link rel="stylesheet" type="text/css" href="\stylesheets\login.css">
+    <script type="text/javascript" src="\javascripts\jquery.js"></script>
 </head>
 <body>
 <div class="htmleaf-container">
@@ -14,12 +15,37 @@
             <img src="\images\logo.png">
             <h1>Welcome</h1>
             <form class="form">
-                <input type="text" placeholder="Username" name="namer">
-                <input type="password" placeholder="Password" name="passwordr">
-                <input type="password" placeholder="password" name="password-repeat">
-                <button type="submit" >Register</button>
+                <input type="text" placeholder="Username" id="nameRegister">
+                <input type="password" placeholder="Password" id="passwordRegister">
+                <input type="password" placeholder="password" id="password-repeat">
+                <button type="button" onclick="register()">Register</button>
             </form>
         </div>
     </div>
 </div>
+<script>
+    function register(){
+        var params ={
+            username: $("#nameRegister").val(),
+            password: $("#passwordRegister").val(),
+            passwordRepeat:$("#password-repeat").val()
+        };
+        alert(params.username);
+        $.ajax({
+            type: 'POST',
+            url: '/register/register',
+            async: false,
+            data: params,
+            dataType: "json",
+            success: function(data) {
+                if(data.success==1) {
+                    window.location.href = "/home?name="+params.username;
+                }
+                else{
+                    alert(data.result);
+                }
+            } // 注意不要在此行增加逗号
+        });
+    }
+</script>
 </body>

@@ -1,28 +1,39 @@
 var express = require('express');
-var app=express();
 var router = express.Router();
-var bodyParser = require('body-parser');
+var db=require('../models/db');
 
 
-// var file='./database/photo.db';
-// var sqlite = require('sqlite3');
-// var db = new sqlite.Database(file);
 
 /* GET home page. */
+
 router.get('/', function(req, res, next) {
     res.render('index');
 });
 router.post('/', function(req, res, next) {
     var na=req.body.username;
     var pwd=req.body.password;
-    if(na=="a"&&pwd=="a") {
-        res.json({"success": 1, "name": "a"});
-    }
-    else{
-        res.json({"success": 0, "name": "a"});
-    }
+    var result;
+    var success;
+    db.getUser(na,function (password) {
+        if(password=="error"){
+            result="error!";
+            success=0;
+        }
+        else if(password=="null") {
+            result = "Unknown name!";
+            success=0;
+        }
+        else if(pwd!=password){
+            result = "Wrong password!";
+            success=0;
+        }
+        else{
+            result=password;
+            success=1;
+        }
+        res.json({result:result,success:success});
+    });
+
 });
-router.get('/home', function(req, res) {
-    res.render('home');
-});
+
 module.exports = router;

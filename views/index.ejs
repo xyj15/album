@@ -37,10 +37,10 @@
             dataType: "json",
             success: function(data) {
                 if(data.success==1) {
-                    window.location.href = "/home";
+                    window.location.href = "/home?name="+params.username;
                 }
                 else{
-                    alert("登录失败");
+                    alert(data.result);
                 }
             } // 注意不要在此行增加逗号
         });
