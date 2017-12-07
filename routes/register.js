@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var db=require('../models/db');
+var db=require('../helper/user');
 
 router.get('/', function(req, res, next) {
     res.render('register');
@@ -9,8 +9,6 @@ router.post('/register', function(req, res, next) {
     var na=req.body.username;
     var pwd=req.body.password;
     var pwdRepeat=req.body.passwordRepeat;
-    console.log(pwd);
-    console.log(pwdRepeat);
     var result;
     var success;
     if(pwd!=pwdRepeat){

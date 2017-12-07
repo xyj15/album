@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var app=express();
-var fs=require("fs");
+var fs=require('fs');
 var multer  = require('multer');
 app.use(multer({ dest: '/tmp/'}).array('image'));
 /* GET home page. */
@@ -28,5 +28,24 @@ router.post('/file_upload', function (req, res) {
         });
     });
 })
+router.post('/photo', function(req, res) {
+  var name="a";
+  var path="./public/photo/"+name+"/cover/";
+  var paths=[];
+  var names=[];
+  var elePath="/photo/"+name+"/cover/";
+    var pa = fs.readdirSync(path);
+    pa.forEach(function(ele,index){
+        paths.push(elePath+ele);
+        names.push(ele.split(".")[0]);
+        console.log(ele);
 
+    })
+
+    console.log(paths.length);
+    res.json({"paths":paths,"names":names});
+
+
+
+});
 module.exports = router;

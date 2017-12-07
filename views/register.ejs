@@ -30,7 +30,6 @@
             password: $("#passwordRegister").val(),
             passwordRepeat:$("#password-repeat").val()
         };
-        alert(params.username);
         $.ajax({
             type: 'POST',
             url: '/register/register',

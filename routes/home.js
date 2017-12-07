@@ -1,18 +1,17 @@
 var express = require('express');
 var router = express.Router();
+var photo=require('../helper/photo');
 
 /* GET home page. */
 router.get('/', function(req, res) {
+
     res.render('home');
 });
 
-// router.post('/home', function(req, res) {
-//     var response = {
-//         "first_name":req.body.name,
-//         "last_name":req.body.password
-//     };
-//     console.log(response);
-//     res.end(JSON.stringify(response));
-// });
+router.post('/photo', function(req, res) {
+    photo.getPhoto("/Users/juaner/IdeaProjects/album/photo/3.jpg",function (photo) {
+        res.json({photo:photo});
+    })
+});
 
 module.exports = router;

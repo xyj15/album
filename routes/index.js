@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var db=require('../models/db');
+var db=require('../helper/user');
 
 
 

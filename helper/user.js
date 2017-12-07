@@ -36,3 +36,11 @@ exports.addUser=function (name,password,callback) {
         });
     
 }
+exports.getProfile=function (name,callback) {
+    var path="../photo/"+name+".jpg";
+    fs.readFile(path,"binary",function (error,file) {
+        if(!error){
+            callback(file);
+        }
+    })
+}

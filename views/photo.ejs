@@ -31,6 +31,7 @@
     <![endif]-->
     <link href="\stylesheets\navbar.css" rel="stylesheet" type="text/css" >
     <link href="\stylesheets\album.css" rel="stylesheet" type="text/css" >
+    <script type="text/javascript" src="\javascripts\jquery.js"></script>
 </head>
 
 <body>
@@ -45,7 +46,7 @@
         <div id="navbar" class="collapse navbar-collapse ">
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="/home">Home</a></li>
-                <li class="active"><a href="/hot">Hot</a></li>
+                <li ><a href="/hot">Hot</a></li>
                 <li ><a href="/activity">Activity</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -54,7 +55,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="/friend">Friend</a></li>
-                        <li><a href="/album">Album</a></li>
+                        <li class="active"><a href="/album">Album</a></li>
                         <li><a href="/myActivity">Activity</a></li>
                     </ul>
                 </li>
@@ -85,45 +86,13 @@
 
         <div class="col-xs-12 col-sm-9">
             <p class="pull-right visible-xs">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                <!--<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>-->
             </p>
 
-            <div class="row">
-                <div class="col-xs-6 col-lg-4">
-                    <img class="album" src="\images\logo.png" >
-                    <p><a class="btn"  role="button" onclick="onephoto()" >相册名</a></p>
-                </div><!--/.col-xs-6.col-lg-4-->
-                <div class="col-xs-6 col-lg-4">
-                    <img class="album" src="\images\logo.png" >
-                    <p><a class="btn" href="#" role="button">相册名</a></p>
-                </div><!--/.col-xs-6.col-lg-4-->
-                <div class="col-xs-6 col-lg-4">
-                    <img class="album" src="\images\logo.png" >
-                    <p><a class="btn" href="#" role="button">相册名</a></p>
-                </div><!--/.col-xs-6.col-lg-4-->
-                <div class="col-xs-6 col-lg-4">
-                    <img class="album" src="\images\logo.png" >
-                    <p><a class="btn" href="#" role="button">相册名</a></p>
-                </div><!--/.col-xs-6.col-lg-4-->
-                <div class="col-xs-6 col-lg-4">
-                    <img class="album" src="\images\logo.png" >
-                    <p><a class="btn" href="#" role="button">相册名</a></p>
-                </div><!--/.col-xs-6.col-lg-4-->
-                <div class="col-xs-6 col-lg-4">
-                    <img class="album" src="\images\logo.png" >
-                    <p><a class="btn" href="#" role="button">相册名</a></p>
-                </div><!--/.col-xs-6.col-lg-4-->
+            <div class="row" id="photo">
             </div><!--/row-->
 
-            <ul class="pagination">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">&raquo;</a></li>
-            </ul>
+
         </div><!--/.col-xs-12.col-sm-9-->
 
 
@@ -139,14 +108,30 @@
     <hr>
 
 
-<script>
-    function onephoto() {
-        showModalDialog("/onephoto");
-    }
-    function upload() {
-        showModalDialog("/upload");
-    }
-</script>
+    <script>
+        var name="a";
+        $.ajax({
+            type: 'POST',
+            url: '/photo/photo',
+            async: false,
+            data:name,
+            dataType: "json",
+            success: function(data) {
+                var content="";
+                for(var i =1;i<data.paths.length;i++){
+                    var src=data.paths[i];
+                    content+="<div class=\"col-xs-6 col-lg-4\">\n" ;
+                    content+="<img class=\"album\" " ;
+                    content+="src="+src+">\n";
+                    content+= "<p><a class=\"btn\" href=\"#\" role=\"button\">" ;
+                    content+=data.names[i]+"</a></p>\n"
+                    content+= "</div><!--/.col-xs-6.col-lg-4-->";
+                }
+                $('#photo').html(content);
+            }
+        });
+        
+    </script>
 </div><!--/.container-->
 
 
