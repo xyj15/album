@@ -23,13 +23,13 @@ router.post('/file_upload', function (req, res) {
                     filename:req.files[0].filename
                 };
             }
-            console.log( response );
-            res.end( JSON.stringify( response ) );
+            console.log( response);
+            res.end( JSON.stringify( response) );
         });
     });
 })
 router.post('/photo', function(req, res) {
-  var name="a";
+  var name=req.body.username;
   var path="./public/photo/"+name+"/cover/";
   var paths=[];
   var names=[];
@@ -38,7 +38,6 @@ router.post('/photo', function(req, res) {
     pa.forEach(function(ele,index){
         paths.push(elePath+ele);
         names.push(ele.split(".")[0]);
-        console.log(ele);
 
     })
 

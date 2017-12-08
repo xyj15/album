@@ -43,7 +43,7 @@
             language: 'zh', //设置语言
             allowedFileExtensions: ['png','gif','jpg'],//接收的文件后缀
             //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
-            uploadUrl:'/photo',
+            uploadUrl:'/upload/upload',
             uploadAsync: true, //默认异步上传
             showUpload: true, //是否显示上传按钮
             showRemove : true, //显示移除按钮
@@ -62,6 +62,15 @@
             validateInitialCount:true,
             previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
 //            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+        });
+        $('#input').on('fileerror', function(event, data, msg) {
+            console.log(data.id);
+            console.log(data.index);
+            console.log(data.file);
+            console.log(data.reader);
+            console.log(data.files);
+            // get message
+            alert(msg);
         });
 </script>
 </body>

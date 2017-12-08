@@ -5,6 +5,9 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     res.render('upload');
 });
+router.post('/upload', function(req, res) {
 
+
+});
 
 module.exports = router;

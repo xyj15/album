@@ -7,8 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/photo', function(req, res) {
-    var name="a";
-    var album="life";
+    var name=req.body.username;
+    var album=req.body.album;
     var path="./public/photo/"+name+"/"+album+"/";
     var paths=[];
     var names=[];
@@ -16,11 +16,30 @@ router.post('/photo', function(req, res) {
     console.log(path);
     var pa = fs.readdirSync(path);
     pa.forEach(function(ele,index){
-        paths.push(elePath+ele);
-        console.log(elePath+ele)
-        names.push(ele.split(".")[0]);
+        if(ele!=".DS_Store") {
+            paths.push(elePath + ele);
+            names.push(ele.split(".")[0]);
+        }
     })
     res.json({"paths":paths,"names":names});
+
+});
+router.post('/del', function(req, res) {
+    var name=req.body.username;
+    var album=req.body.album;
+    var path="./public/photo/"+name+"/"+album+"/";
+    var paths=[];
+    var names=[];
+    var elePath="/photo/"+name+"/"+album+"/";
+    var cover="./public/photo/"+name+"/"+"cover/"+album+".jpg";
+    var pa = fs.readdirSync(path);
+    pa.forEach(function(ele,index){
+        fs.unlinkSync(path+ele);
+        console.log(path+ele);
+    })
+    fs.unlinkSync(cover);
+    fs.rmdirSync(path);
+    res.json({"success":"1"});
 
 
 
