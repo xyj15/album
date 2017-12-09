@@ -15,6 +15,8 @@ var onephoto=require('./routes/onephoto');
 var photo=require('./routes/photo');
 var upload=require('./routes/upload');
 var hot=require('./routes/hot');
+var activity=require('./routes/activity');
+var myactivity=require('./routes/myactivity');
 var app = express();
 
 // view engine setup
@@ -39,6 +41,8 @@ app.use('/onephoto',onephoto);
 app.use('/photo',photo);
 app.use('/upload',upload);
 app.use('/hot',hot);
+app.use('/activity',activity);
+app.use('/myactivity',myactivity);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

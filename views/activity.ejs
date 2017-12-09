@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>首页</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+
+    <![endif]-->
+    <link href="\stylesheets\navbar.css" rel="stylesheet" type="text/css" >
+    <link href="\stylesheets\album.css" rel="stylesheet" type="text/css" >
+    <script type="text/javascript" src="\javascripts\jquery.js"></script>
+    <script type="text/javascript" src="\javascripts\bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+<nav class="navbar navbar-fixed-top navbar-inverse navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+
+
+            <img src="\images\logo.png" style="width: 60px">
+            <a class="navbar-brand" >iPHOTO</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse ">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="javascript:void(0)" onclick="home()">Home</a></li>
+                <li ><a href="javascript:void(0)" onclick="hot()">Hot</a></li>
+                <li class="active"><a href="javascript:void(0)" onclick="">Activity</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        My
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0)" onclick="friend()">Friend</a></li>
+                        <li><a href="javascript:void(0)" onclick="album()">Album</a></li>
+                        <li><a href="javascript:void(0)" onclick="">Activity</a></li>
+                    </ul>
+                </li>
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+
+                    </li>
+
+                </form>
+
+
+            </ul>
+
+        </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</nav><!-- /.navbar -->
+
+
+
+<br>
+
+<div class="jumbotron">
+    <h1>iPHOTO</h1>
+    <p>Join us!</p>
+    <p>Make friends with the world’s most generous community of photographers. </p>
+</div>
+
+
+
+<div class="col-xs-16 col-sm-12" style="margin-bottom: 200px">
+    <p class="pull-right visible-xs">
+    </p>
+
+    <div class="row" id="activity">
+        <div class="col-xs-6 col-lg-4">
+            <img class="album"  src="/images/logo.png">
+            <p>名字</p>
+            <p>日期</p>
+            <p>地点</p>
+            <button>Join</button>
+        </div><!--/.col-xs-6.col-lg-4-->
+        <div class="col-xs-6 col-lg-4">
+            <img class="album"  src="/images/logo.png">
+        </div><!--/.col-xs-6.col-lg-4-->
+        <div class="col-xs-6 col-lg-4">
+            <img class="album"  src="/images/logo.png">
+            <p>名字</p>
+            <p>日期</p>
+            <p>地点</p>
+            <button>Join</button>
+        </div><!--/.col-xs-6.col-lg-4-->
+        <div class="col-xs-6 col-lg-4">
+            <img class="album"  src="/images/logo.png">
+            <p>名字</p>
+            <p>日期</p>
+            <p>地点</p>
+            <button>Join</button>
+        </div><!--/.col-xs-6.col-lg-4-->
+        <div class="col-xs-6 col-lg-4">
+            <img class="album"  src="/images/logo.png">
+            <p>名字</p>
+            <p>日期</p>
+            <p>地点</p>
+            <button>Join</button>
+        </div><!--/.col-xs-6.col-lg-4-->
+    </div><!--/row-->
+</div><!--/.col-xs-12.col-sm-9-->
+
+
+
+
+
+
+</div><!--/.container-->
+
+
+
+<script type="text/javascript">
+    $.ajax({
+        type: 'POST',
+        url: '/activity/activity',
+        async: false,
+        dataType: "json",
+        success: function(data) {
+            var content="";
+            for(var i=0;i<data.name.length;i++){
+                content+="<div class=\"col-xs-6 col-lg-4\">" ;
+                content+="<img class=\"album\"  src=\"/images/logo.png\">" ;
+                content+="<p>"+data.name[i]+"</p>";
+                content+="<p>"+data.time[i]+"</p>";
+                content+="<p>"+data.place[i]+"</p>";
+                content+="<button>Join</button>"
+                content+="</div><!--/.col-xs-6.col-lg-4-->";
+            }
+            console.log(content);
+            $('#activity').html(content);
+        }
+    });
+    function hot() {
+        location.href = "/hot?name="+getQueryString("name");
+    }
+    function friend() {
+        location.href = "/friend?name="+getQueryString("name");
+    }
+    function album() {
+        location.href = "/album?name="+getQueryString("name");
+    }
+    function home() {
+        location.href = "/home?name="+getQueryString("name");
+    }
+
+    function getQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+</script>
+</body>
+</html>
