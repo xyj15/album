@@ -4,12 +4,119 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+
+    <![endif]-->
+    <link href="\stylesheets\navbar.css" rel="stylesheet" type="text/css" >
+    <link href="\stylesheets\album.css" rel="stylesheet" type="text/css" >
+    <script type="text/javascript" src="\javascripts\jquery.js"></script>
+    <script type="text/javascript" src="\javascripts\bootstrap.min.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-fixed-top navbar-inverse navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+
+
+            <img src="\images\logo.png" style="width: 60px">
+            <a class="navbar-brand" >iPHOTO</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse ">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="javascript:void(0)" onclick="home()">Home</a></li>
+                <li ><a href="javascript:void(0)" onclick="hot()">Hot</a></li>
+                <li ><a href="javascript:void(0)" onclick="">Activity</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        My
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:void(0)" onclick="friend()">Friend</a></li>
+                        <li class="active"><a href="javascript:void(0)" onclick="album()">Album</a></li>
+                        <li><a href="javascript:void(0)" onclick="">Activity</a></li>
+                    </ul>
+                </li>
+                <form class="navbar-form navbar-right" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+
+                    </li>
+
+                </form>
+
+
+            </ul>
+
+        </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</nav><!-- /.navbar -->
 <div class="htmleaf-container">
 
-    <img src="\images\logo.png" width="800px">
-    <p>name <br>描述<br>时间</p>
+    <img id="onePhoto" style="width: 100%">
+    <table style="margin-top: 5px;margin-bottom: 10px">
+        <tr>
+            <th><button style='margin-left: 5px'><span class="glyphicon glyphicon-heart"></span>1940</button></th>
+            <th style="width: 43%"></th>
+            <th><button style="float:right" onclick="del()">Delete</button></th>
+            <th style="width: 43%"></th>
+            <th><button style="float:right">Download</button></th>
+        </tr>
+    </table>
 
 </div>
+<script>
+        function del() {
+            $.ajax({
+                type: 'POST',
+                url: '/onephoto/delete',
+                async: false,
+                data: params,
+                dataType: "json",
+                success: function (data) {
+                    if (data.success == "1")
+                        location.href = "/photo?name=" + getQueryString("name") + "&album=" + getQueryString("album");
+                }
+            });
+        }
+
+    var params ={
+        username: getQueryString("name"),
+        album:getQueryString("album"),
+        photo:getQueryString("photo")
+    };
+    $.ajax({
+        type: 'POST',
+        url: '/onephoto/onephoto',
+        async: false,
+        data:params,
+        dataType: "json",
+        success: function(data) {
+            $("#onePhoto").attr("src",data.path);
+        }
+    });
+    function hot() {
+        location.href = "/hot?name="+getQueryString("name");
+    }
+    function friend() {
+        location.href = "/friend?name="+getQueryString("name");
+    }
+    function album() {
+        location.href = "/album?name="+getQueryString("name");
+    }
+    function home() {
+        location.href = "/home?name="+getQueryString("name");
+    }
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+</script>
 </body>
