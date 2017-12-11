@@ -1,9 +1,9 @@
 var sqlite3 = require('sqlite3');
 
 var location='/Users/juaner/IdeaProjects/album/database/photo.db';
-exports.getActivities= function (callback) {
+exports.getActivities= function (name,callback) {
     var db=new sqlite3.Database(location);
-    db.all("SELECT * FROM activity",function (err,row){
+    db.all("SELECT * FROM activity where initiator<> ? and id NOT IN (SELECT activityId FROM joinActivity WHERE name = ?)",[name,name],function (err,row){
         console.log(row);
         callback(row);
     })

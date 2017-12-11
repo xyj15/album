@@ -151,10 +151,14 @@
             }
         });
     }
+    var para={
+        username:getQueryString("name")
+    }
     $.ajax({
         type: 'POST',
         url: '/activity/activity',
         async: false,
+        data:para,
         dataType: "json",
         success: function(data) {
             var content="";
