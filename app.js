@@ -17,6 +17,7 @@ var upload=require('./routes/upload');
 var hot=require('./routes/hot');
 var activity=require('./routes/activity');
 var myactivity=require('./routes/myactivity');
+var imformation=require('./routes/imformation');
 var app = express();
 
 // view engine setup
@@ -43,6 +44,7 @@ app.use('/upload',upload);
 app.use('/hot',hot);
 app.use('/activity',activity);
 app.use('/myactivity',myactivity);
+app.use('/imformation',imformation);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

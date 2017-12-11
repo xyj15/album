@@ -40,7 +40,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="javascript:void(0)" onclick="home()">Home</a></li>
                 <li class="active"><a href="javascript:void(0)" onclick="hot()">Hot</a></li>
-                <li ><a href="javascript:void(0)" onclick="">Activity</a></li>
+                <li ><a href="javascript:void(0)" onclick="activity()">Activity</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         My
@@ -49,7 +49,8 @@
                     <ul class="dropdown-menu">
                         <li><a href="javascript:void(0)" onclick="friend()">Friend</a></li>
                         <li><a href="javascript:void(0)" onclick="album()">Album</a></li>
-                        <li><a href="javascript:void(0)" onclick="">Activity</a></li>
+                        <li><a href="javascript:void(0)" onclick="myactivity()">Activity</a></li>
+                        <li><a href="javascript:void(0)" onclick="imformation()">Information</a></li>
                     </ul>
                 </li>
                 <form class="navbar-form navbar-right" role="search">
@@ -120,6 +121,15 @@
     }
     function home() {
         location.href = "/home?name="+getQueryString("name");
+    }
+    function activity() {
+        location.href = "/activity?name="+getQueryString("name");
+    }
+    function myactivity() {
+        location.href = "/myactivity?name="+getQueryString("name");
+    }
+    function imformation() {
+        location.href = "/imformation?name="+getQueryString("name");
     }
     $(document).ready(function(){
         var range = 50;             //距下边界长度/单位px

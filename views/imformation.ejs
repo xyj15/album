@@ -26,6 +26,7 @@
     <![endif]-->
     <link href="\stylesheets\navbar.css" rel="stylesheet" type="text/css" >
     <link href="\stylesheets\album.css" rel="stylesheet" type="text/css" >
+    <link href="\stylesheets\activity.css" rel="stylesheet" type="text/css" >
     <link rel="stylesheet" type="text/css" href="\stylesheets\fileinput.min.css">
     <script type="text/javascript" src="\javascripts\jquery.js"></script>
     <script type="text/javascript" src="\javascripts\bootstrap.min.js"></script>
@@ -36,8 +37,6 @@
 <nav class="navbar navbar-fixed-top navbar-inverse navbar-default">
     <div class="container">
         <div class="navbar-header">
-
-
             <img src="\images\logo.png" style="width: 60px">
             <a class="navbar-brand" >iPHOTO</a>
         </div>
@@ -53,9 +52,9 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a href="javascript:void(0)" onclick="friend()">Friend</a></li>
-                        <li class="active"><a href="javascript:void(0)" onclick="album()">Album</a></li>
+                        <li ><a href="javascript:void(0)" onclick="album()">Album</a></li>
                         <li><a href="javascript:void(0)" onclick="myactivity()">Activity</a></li>
-                        <li><a href="javascript:void(0)" onclick="imformation()">Information</a></li>
+                        <li class="active"><a href="javascript:void(0)" onclick="imformation()">Information</a></li>
                     </ul>
                 </li>
                 <form class="navbar-form navbar-right" role="search">
@@ -75,70 +74,82 @@
 </nav><!-- /.navbar -->
 
 <div class="jumbotron">
-    <h1 id="album">相册名</h1>
-    <p>相片描述</p>
+    <img id="profile"  width="150px" class="img-circle">
+    <h1 id="hello">Hello, User!</h1>
+    <p>这个用户很懒什么都没留下。</p>
 </div>
 
 <div class="container">
 
-    <div class="row row-offcanvas row-offcanvas-right">
-        <div class="list-group">
-            <button id="operate" type="button" onclick="upload()">上传照片</button>
-            <button id="operate" type="button" onclick="del()">删除相册</button>
+    <div class="htmleaf-container">
+        <div class="wrapper">
+            <div class="container">
+                <form class="form" enctype="multipart/form-data" method="post">
+                    <input type="file"  id="input" name="profile" multiple class="file-loading"/>
+                </form>
+            </div>
         </div>
+    </div>
 <div id="upload">
-
+    <input type="password" placeholder="password" id="password">
+    <input type="password" placeholder="passwordRepeat" id="passwordRepeat">
 </div>
-        <div class="col-xs-16 col-sm-12">
-            <p class="pull-right visible-xs">
-                <!--<button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>-->
-            </p>
-
-            <div class="row" id="photo">
-            </div><!--/row-->
-        </div><!--/.col-xs-12.col-sm-9-->
 
 
-
-
-    </div><!--/row-->
+    <button id="operate" type="button" onclick="upload()" style="width: 400px">Upload</button>
+</div><!--/row-->
     <hr>
 
 
     <script>
-        var count=0;
-        function del() {
+        document.getElementById("hello").innerHTML="Hello,"+getQueryString("name")+"!";
+        var para = {
+            username: getQueryString("name")
+        };
+        $.ajax({
+            type: 'POST',
+            url: '/imformation/profile',
+            async: false,
+            data: para,
+            dataType: "json",
+            success: function(data) {
+                if(data.success==1) {
+                    document.getElementById("profile").src=data.src;
+                }
+                else{
+                    //alert(data.result);
+                }
+            } // 注意不要在此行增加逗号
+        });
+        function upload() {
+            var params = {
+                username: getQueryString("name"),
+                password: $('#password').val(),
+                passwordRepeat: $('#passwordRepeat').val(),
+            };
             $.ajax({
                 type: 'POST',
-                url: '/photo/del',
+                url: '/imformation/edit',
                 async: false,
-                data:params,
+                data: params,
                 dataType: "json",
                 success: function(data) {
-                    if(data.success=="1")
-                        location.href = "/album?name="+getQueryString("name");
-                }
+                    if(data.success==1) {
+                        window.location.href = "/imformation?name="+params.username;
+                    }
+                    else{
+                        alert(data.result);
+                    }
+                } // 注意不要在此行增加逗号
             });
         }
 
-        function upload() {
-            console.log(count);
-            if(count==0) {
-                $('#upload').html("<div class=\"htmleaf-container\">\n" +
-                    "            <div class=\"wrapper\">\n" +
-                    "                <div class=\"container\">\n" +
-                    "                    <form class=\"form\" enctype=\"multipart/form-data\" method=\"post\">\n" +
-                    "                        <input type=\"file\"  id=\"input\" name=\"recfile\" multiple class=\"file-loading\"/>\n" +
-                    "\n" +
-                    "                    </form>\n" +
-                    "                </div>\n" +
-                    "            </div>\n" +
-                    "        </div>");
+
                 $("#input").fileinput({
                     language: 'zh', //设置语言
                     allowedFileExtensions: ['png', 'gif', 'jpg'],//接收的文件后缀
                     uploadExtraData:{"name": getQueryString("name"), "album":getQueryString("album")},
-                    uploadUrl: '/photo/upload',
+                    uploadUrl: '/imformation/pro',
                     uploadAsync: true, //默认异步上传
                     showUpload: true, //是否显示上传按钮
                     showRemove: true, //显示移除按钮
@@ -158,12 +169,8 @@
                     previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
 //            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
                 });
-                count=1;
-            }else{
-                $('#upload').html("");
-                count=0;
-            }
-        }
+
+
 
         function hot() {
             location.href = "/hot?name="+getQueryString("name");
@@ -186,33 +193,8 @@
         function imformation() {
             location.href = "/imformation?name="+getQueryString("name");
         }
-        document.getElementById("album").innerHTML=getQueryString("album");
-        var params ={
-            username: getQueryString("name"),
-            album:getQueryString("album")
-        };
 
-        $.ajax({
-            type: 'POST',
-            url: '/photo/photo',
-            async: false,
-            data:params,
-            dataType: "json",
-            success: function(data) {
-                var content="";
-                for(var i =0;i<data.paths.length;i++){
-                    var src=data.paths[i];
-                    content+="<div class=\"col-xs-6 col-lg-4\">\n" ;
-                    content+="<img class=\"album\" " ;
-                    content+="src="+src+">\n";
-                    content+= "<p><a class=\"btn\"  role=\"button\" ";
-                    content+="href="+"/onephoto?name="+getQueryString("name")+"&album="+getQueryString("album")+"&photo="+data.names[i]+" >";
-                    content+=data.names[i]+"</a></p>\n"
-                    content+= "</div><!--/.col-xs-6.col-lg-4-->";
-                }
-                $('#photo').html(content);
-            }
-        });
+
         function getQueryString(name)
         {
             var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
