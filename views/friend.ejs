@@ -17,14 +17,7 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="offcanvas.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -89,27 +82,16 @@
 <div class="container" style="margin:0 auto; width: 300px;" >
 
 
-
-            <ul class="nav nav-tabs"  style="margin:0 auto; width: 300px;">
-                <li class="active"><a href="#">我关注谁</a></li>
-                <li><a href="#">谁关注我</a></li>
-
-            </ul>
+    <div class="btn-group btn-group-lg">
+        <button  type="button" onclick="following()">following</button>
+        <button  type="button" onclick="follower()">follower</button>
+    </div>
 
 
     <table border="0"  >
-        <tr>
-            <th><img src="\images\logo.png" width="150px"></th>
-            <th>名字<br>这个用户很懒</th>
-        </tr>
-        <tr>
-            <th><img src="\images\logo.png" width="150px"></th>
-            <th>名字<br>这个用户很懒</th>
-        </tr>
-        <tr>
-            <th><img src="\images\logo.png" width="150px"></th>
-            <th>名字<br>这个用户很懒</th>
-        </tr>
+        <div id="friend">
+
+        </div>
     </table>
 
 
@@ -119,9 +101,56 @@
 </div><!--/.container-->
 
 <script>
+
     var para = {
         username: getQueryString("name")
     };
+    function following() {
+        $.ajax({
+            type: 'POST',
+            url: '/friend/following',
+            async: false,
+            data: para,
+            dataType: "json",
+            success: function(data) {
+                var content="";
+                for(var i=0;i<data.names.length;i++){
+                    content+="<tr style='font-size: 18px'>";
+                    content+="<th><img src=" ;
+                    content+=data.pros[i]+" width=\"150px\" class=\"img-circle\"></th>" ;
+                    content+="<th style='color:#53e3a6'>" ;
+                    content+=data.names[i]+"<br><p style='color:#ffbbbc'>这个用户很懒</p></th>\n" ;
+                    content+="</tr>";
+                    content+="<br>";
+                }
+                $('#friend').html(content);
+            } // 注意不要在此行增加逗号
+        });
+    }
+
+    function follower() {
+        $.ajax({
+            type: 'POST',
+            url: '/friend/follower',
+            async: false,
+            data: para,
+            dataType: "json",
+            success: function(data) {
+                var content="";
+                for(var i=0;i<data.names.length;i++){
+                    content+="<tr style='font-size: 18px'>";
+                    content+="<th><img src=" ;
+                    content+=data.pros[i]+" width=\"150px\" class=\"img-circle\"></th>" ;
+                    content+="<th style='color:#53e3a6'>" ;
+                    content+=data.names[i]+"<br><p style='color:#ffbbbc'>这个用户很懒</p></th>\n" ;
+                    content+="</tr>";
+                    content+="<br>";
+                }
+                $('#friend').html(content);
+            } // 注意不要在此行增加逗号
+        });
+    }
+    following();
     $.ajax({
         type: 'POST',
         url: '/imformation/profile',
