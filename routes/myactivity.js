@@ -23,28 +23,23 @@ router.post('/heldactivity', function(req, res, next) {
         res.json({name:name,time:time,place:place,id:id});
     });
 });
-// router.post('/joinedactivity', function(req, res, next) {
-//     var name="a";
-//     var time=[];
-//     var name=[];
-//     var place=[];
-//     var id=[];
-//     var activityId=[];
-//     db.getJoinedIds("a",function (activity) {
-//         for(var i=0;i<activity.length;i++) {
-//             activityId.push(activity[i]);
-//
-//             db.getHeldActivities(activityId, function (activity) {
-//                 name[i] = activity.name;
-//                 id[i] = activity.id;
-//                 time[i] = activity.time;
-//                 place[i] = activity.place;
-//             });
-//             res.json({name: name, time: time, place: place, id: id});
-//         }
-//     });
-//
-// });
+router.post('/joinedactivity', function(req, res, next) {
+    var username="a";
+    var time=[];
+    var name=[];
+    var place=[];
+    var id=[];
+    db.getJoinedActivities(username,function (activity) {
+        for(var i=0;i<activity.length;i++){
+            name[i]=activity[i].name;
+            time[i]=activity[i].time;
+            place[i]=activity[i].place;
+            id[i]=activity[i].id;
+        }
+        res.json({name:name,time:time,place:place,id:id});
+    });
+
+});
 router.post('/del', function(req, res, next) {
     var id=req.body.activityId;
     var success;
@@ -67,6 +62,21 @@ router.post('/edit', function(req, res) {
     console.log(id);
     var success;
     db.editActivity(id,name,time,place,function (result) {
+        if(result=="success"){
+            success=1;
+        }
+        else {
+            success=0;
+        }
+        res.json({success:success});
+    })
+
+});
+router.post('/delJoined', function(req, res, next) {
+    var id=req.body.activityId;
+    var name=req.body.name;
+    var success;
+    db.delJoinedActivity(id,name,function (result) {
         if(result=="success"){
             success=1;
         }

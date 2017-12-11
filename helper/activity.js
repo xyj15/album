@@ -9,14 +9,12 @@ exports.getActivities= function (callback) {
     })
     db.close();
 }
-exports.getJoinedActivities= function (ids,callback) {
+exports.getJoinedActivities= function (name,callback) {
     var db=new sqlite3.Database(location);
-    for(var i=0;i<ids.length;i++) {
-        db.all("SELECT * FROM activity where id=?", [id], function (err, row) {
+        db.all("SELECT * FROM activity where id in(select activityId from joinActivity where name = ? )", [name], function (err, row) {
             console.log(row);
             callback(row);
         });
-    }
     db.close();
 }
 exports.getHeldActivities= function (name,callback) {
@@ -87,4 +85,14 @@ exports.editActivity=function (id,name,time,place,callback) {
             }
 
         });
+};
+exports.delJoinedActivity=function (id,name,callback) {
+    var db=new sqlite3.Database(location);
+    db.run("DELETE FROM joinActivity WHERE activityId=? and name=? ", [id,name], function(error){
+        if (error){
+            callback(error);
+        } else {
+            callback("success");
+        }
+    });
 };

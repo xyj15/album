@@ -41,7 +41,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li ><a href="javascript:void(0)" onclick="home()">Home</a></li>
                 <li ><a href="javascript:void(0)" onclick="hot()">Hot</a></li>
-                <li class="active"><a href="javascript:void(0)" onclick="activity()">Activity</a></li>
+                <li><a href="javascript:void(0)" onclick="activity()">Activity</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         My
@@ -75,7 +75,7 @@
 
 <div class="jumbotron">
     <img id="profile"  width="150px" class="img-circle">
-    <h1>Hello, User!</h1>
+    <h1 id="hello">Hello, User!</h1>
     <p>这个用户很懒什么都没留下。</p>
 </div>
 
@@ -111,6 +111,25 @@
 
 
 <script type="text/javascript">
+    var para = {
+        username: getQueryString("name")
+    };
+    $.ajax({
+        type: 'POST',
+        url: '/imformation/profile',
+        async: false,
+        data: para,
+        dataType: "json",
+        success: function(data) {
+            if(data.success==1) {
+                document.getElementById("profile").src=data.src;
+            }
+            else{
+                //alert(data.result);
+            }
+        } // 注意不要在此行增加逗号
+    });
+    document.getElementById("hello").innerHTML="Hello,"+getQueryString("name")+"!";
     var count=0;
     function edit(id) {
         if(count==0) {
@@ -168,27 +187,27 @@
             $('#heldactivity').html(content);
         }
     });
-    // $.ajax({
-    //     type: 'POST',
-    //     url: '/myactivity/joinedactivity',
-    //     async: false,
-    //     dataType: "json",
-    //     success: function(data) {
-    //
-    //         var content="";
-    //         for(var i=0;i<data.name.length;i++){
-    //             content+="<div class=\"col-xs-6 col-lg-4\">" ;
-    //             content+="<img class=\"album\"  src=\"/images/logo.png\">" ;
-    //             content+="<p>"+data.name[i]+"</p>";
-    //             content+="<p>"+data.time[i]+"</p>";
-    //             content+="<p>"+data.place[i]+"</p>";
-    //             content+="<button>Join</button>"
-    //             content+="</div><!--/.col-xs-6.col-lg-4-->";
-    //         }
-    //         console.log(content);
-    //         $('#joinedactivity').html(content);
-    //     }
-    // });
+    $.ajax({
+        type: 'POST',
+        url: '/myactivity/joinedactivity',
+        async: false,
+        dataType: "json",
+        success: function(data) {
+            var content="";
+            for(var i=0;i<data.name.length;i++){
+                content+="<div class=\"col-xs-6 col-lg-4\">" ;
+                content+="<img class=\"album\"  src=\"/images/logo.png\">" ;
+                content+="<p>"+data.name[i]+"</p>";
+                content+="<p>"+data.time[i]+"</p>";
+                content+="<p>"+data.place[i]+"</p>";
+                content+="<button id=\"join\" onclick='delJoined(" ;
+                content+= data.id[i]+")'>Delete</button>";
+                content+="</div><!--/.col-xs-6.col-lg-4-->";
+            }
+            console.log(content);
+            $('#joinedactivity').html(content);
+        }
+    });
     function hot() {
         location.href = "/hot?name="+getQueryString("name");
     }
@@ -217,6 +236,25 @@
         $.ajax({
             type: 'POST',
             url: '/myactivity/del',
+            async: false,
+            data:params,
+            dataType: "json",
+            success: function(data) {
+                if(data.success=="1"){
+                    alert("success");
+                    location.href = "/myactivity?name="+getQueryString("name");
+                }
+            }
+        });
+    }
+    function delJoined(id) {
+        var params={
+            activityId:id,
+            name:getQueryString("name")
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/myactivity/delJoined',
             async: false,
             data:params,
             dataType: "json",
