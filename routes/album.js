@@ -94,4 +94,21 @@ router.post('/isfollowed', function(req, res, next) {
     })
 
 });
+
+router.post('/follow', function(req, res, next) {
+    var name=req.body.username;
+    var follow=req.body.follow;
+    fdb.follow(name,follow,function (result) {
+        res.json({success:"1"});
+    })
+
+});
+router.post('/unfollow', function(req, res, next) {
+    var name=req.body.username;
+    var follow=req.body.follow;
+    fdb.unfollow(name,follow,function (result) {
+        res.json({success:"1"});
+    })
+
+});
 module.exports = router;

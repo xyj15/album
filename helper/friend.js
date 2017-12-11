@@ -23,4 +23,20 @@ exports.isFollowed= function (name,follow,callback) {
         callback(row);
     })
     db.close();
-}
+};
+
+exports.follow= function (name,follow,callback) {
+    var db=new sqlite3.Database(location);
+    db.all("INSERT INTO follow (name,follower) VALUES (?, ?);",[follow,name],function (err,row){
+        callback(row);
+    })
+    db.close();
+};
+
+exports.unfollow= function (name,follow,callback) {
+    var db=new sqlite3.Database(location);
+    db.all("DELETE FROM follow WHERE name=? and follower=?",[follow,name],function (err,row){
+        callback(row);
+    })
+    db.close();
+};

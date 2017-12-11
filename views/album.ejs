@@ -151,15 +151,17 @@ var count=0;
             count=0;
         }
     }
+var para;
+var pa;
 if(getQueryString("friend")!=null){
-    var para = {
+    para = {
         username: getQueryString("friend")
     };
     document.getElementById("hello").innerHTML=getQueryString("friend");
     $('#operate').text("Follow");
     $('#operate').attr('onclick',"follow()");
     $('#albumName').remove();
-    var pa={
+    pa={
         username: getQueryString("name"),
         follow: getQueryString("friend")
     }
@@ -172,9 +174,14 @@ if(getQueryString("friend")!=null){
         success: function(data) {
             if(data.followed==1) {
                 $('#operate').text("Followed");
-                $('#operate').attr('disabled',"true");
+                $('#operate').attr('onclick',"unfollow()");
                 $('#operate').css("background","#ffbbbc");
                 $('#operate').css("color","white");
+            }else{
+                $('#operate').text("Follow");
+                $('#operate').attr('onclick',"follow()");
+                $('#operate').css("color","white");
+                $('#operate').css("background","#53e3a6");
             }
 
         } // 注意不要在此行增加逗号
@@ -182,14 +189,44 @@ if(getQueryString("friend")!=null){
 
 }
 else{
-    var para = {
+    para = {
         username: getQueryString("name")
-
     };
     document.getElementById("hello").innerHTML="Hello,"+getQueryString("name")+"!";
 }
 function follow() {
-
+    $.ajax({
+        type: 'POST',
+        url: '/album/follow',
+        async: false,
+        data: pa,
+        dataType: "json",
+        success: function(data) {
+            if(data.success==1) {
+                location.href="/album?name="+getQueryString("name")+"&friend="+getQueryString("friend");
+            }
+            else{
+                //alert(data.result);
+            }
+        } // 注意不要在此行增加逗号
+    });
+}
+function unfollow() {
+    $.ajax({
+        type: 'POST',
+        url: '/album/unfollow',
+        async: false,
+        data: pa,
+        dataType: "json",
+        success: function(data) {
+            if(data.success==1) {
+                location.href="/album?name="+getQueryString("name")+"&friend="+getQueryString("friend");
+            }
+            else{
+                //alert(data.result);
+            }
+        } // 注意不要在此行增加逗号
+    });
 }
 $.ajax({
     type: 'POST',
