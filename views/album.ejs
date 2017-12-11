@@ -157,8 +157,29 @@ if(getQueryString("friend")!=null){
     };
     document.getElementById("hello").innerHTML=getQueryString("friend");
     $('#operate').text("Follow");
-    $('#operate').attr('onclick','');
+    $('#operate').attr('onclick',"follow()");
     $('#albumName').remove();
+    var pa={
+        username: getQueryString("name"),
+        follow: getQueryString("friend")
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/album/isfollowed',
+        async: false,
+        data: pa,
+        dataType: "json",
+        success: function(data) {
+            if(data.followed==1) {
+                $('#operate').text("Followed");
+                $('#operate').attr('disabled',"true");
+                $('#operate').css("background","#ffbbbc");
+                $('#operate').css("color","white");
+            }
+
+        } // 注意不要在此行增加逗号
+    });
+
 }
 else{
     var para = {
@@ -167,7 +188,9 @@ else{
     };
     document.getElementById("hello").innerHTML="Hello,"+getQueryString("name")+"!";
 }
+function follow() {
 
+}
 $.ajax({
     type: 'POST',
     url: '/imformation/profile',

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var app=express();
 var fs=require('fs');
+var fdb=require('../helper/friend');
 var multer  = require('multer');
 var juedui="/Users/juaner/IdeaProjects/album/public/photo/";
 var storage = multer.diskStorage({
@@ -77,5 +78,20 @@ router.post('/upload',upload.single('album'),function(req,res){
     var newPath="./public/photo/"+name+"/cover/"+album+"."+fileName.split(".")[1];
     fs.renameSync(juedui+fileName,newPath);
     res.json({"success":"1"});
+});
+router.post('/isfollowed', function(req, res, next) {
+    var name=req.body.username;
+    var follow=req.body.follow;
+
+    fdb.isFollowed(name,follow,function (followed) {
+        if(followed.length>0){
+            res.json({followed:"1"});
+        }
+        else{
+            res.json({followed:"0"});
+        }
+
+    })
+
 });
 module.exports = router;

@@ -16,3 +16,11 @@ exports.getFollower= function (name,callback) {
     })
     db.close();
 }
+
+exports.isFollowed= function (name,follow,callback) {
+    var db=new sqlite3.Database(location);
+    db.all("SELECT * from follow where name=? and follower=?",[follow,name],function (err,row){
+        callback(row);
+    })
+    db.close();
+}
