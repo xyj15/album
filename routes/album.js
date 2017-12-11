@@ -45,6 +45,7 @@ router.post('/file_upload', function (req, res) {
 
 router.post('/photo', function(req, res) {
   var name=req.body.username;
+  console.log("aa"+name);
   var path="./public/photo/"+name+"/cover/";
   var paths=[];
   var names=[];

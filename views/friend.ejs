@@ -101,7 +101,6 @@
 </div><!--/.container-->
 
 <script>
-
     var para = {
         username: getQueryString("name")
     };
@@ -118,8 +117,9 @@
                     content+="<tr style='font-size: 18px'>";
                     content+="<th><img src=" ;
                     content+=data.pros[i]+" width=\"150px\" class=\"img-circle\"></th>" ;
-                    content+="<th style='color:#53e3a6'>" ;
-                    content+=data.names[i]+"<br><p style='color:#ffbbbc'>这个用户很懒</p></th>\n" ;
+                    content+="<th ><a style='color:#53e3a6' href='" ;
+                    content+="/album?name="+getQueryString("name")+"&friend="+data.names[i]+"'>" ;
+                    content+=data.names[i]+"</a><br><p style='color:#ffbbbc'>这个用户很懒</p></th>\n" ;
                     content+="</tr>";
                     content+="<br>";
                 }
@@ -141,8 +141,8 @@
                     content+="<tr style='font-size: 18px'>";
                     content+="<th><img src=" ;
                     content+=data.pros[i]+" width=\"150px\" class=\"img-circle\"></th>" ;
-                    content+="<th style='color:#53e3a6'>" ;
-                    content+=data.names[i]+"<br><p style='color:#ffbbbc'>这个用户很懒</p></th>\n" ;
+                    content+="<th style='color:#53e3a6'><a>" ;
+                    content+=data.names[i]+"</a><br><p style='color:#ffbbbc'>这个用户很懒</p></th>\n" ;
                     content+="</tr>";
                     content+="<br>";
                 }

@@ -151,9 +151,23 @@ var count=0;
             count=0;
         }
     }
-var para = {
-    username: getQueryString("name")
-};
+if(getQueryString("friend")!=null){
+    var para = {
+        username: getQueryString("friend")
+    };
+    document.getElementById("hello").innerHTML=getQueryString("friend");
+    $('#operate').text("Follow");
+    $('#operate').attr('onclick','');
+    $('#albumName').remove();
+}
+else{
+    var para = {
+        username: getQueryString("name")
+
+    };
+    document.getElementById("hello").innerHTML="Hello,"+getQueryString("name")+"!";
+}
+
 $.ajax({
     type: 'POST',
     url: '/imformation/profile',
@@ -169,7 +183,7 @@ $.ajax({
         }
     } // 注意不要在此行增加逗号
 });
-    document.getElementById("hello").innerHTML="Hello,"+getQueryString("name")+"!";
+
     function hot() {
         location.href = "/hot?name="+getQueryString("name");
     }
@@ -191,14 +205,11 @@ $.ajax({
     function imformation() {
         location.href = "/imformation?name="+getQueryString("name");
     }
-    var params ={
-        username: getQueryString("name")
-    };
         $.ajax({
             type: 'POST',
             url: '/album/photo',
             async: false,
-            data:params,
+            data:para,
             dataType: "json",
             success: function(data) {
                 var content="";
@@ -209,7 +220,12 @@ $.ajax({
                     content+="<img id=\"cover\" class=\"album\"";
                     content+="src="+src+">";
                     content+=  "<p><a href=";
-                    content+="/photo?name="+getQueryString("name")+"&album="+data.names[i];
+                    if(getQueryString("friend")!=null){
+                        content+="/photo?name="+getQueryString("name")+"&friend="+getQueryString("friend")+"&album="+data.names[i];
+                    }else {
+                        content+="/photo?name="+getQueryString("name")+"&album="+data.names[i];
+                    }
+
                     content+=" class=\"btn\"  role=\"button\">" ;
                     content+=data.names[i]+"</a></p>\n";
                     content+= "</div><!--/.col-xs-6.col-lg-4-->";

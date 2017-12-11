@@ -65,31 +65,30 @@
         <tr>
             <th><button style='margin-left: 5px'><span class="glyphicon glyphicon-heart"></span>1940</button></th>
             <th style="width: 43%"></th>
-            <th><button style="float:right" onclick="del()">Delete</button></th>
+            <th></th>
             <th style="width: 43%"></th>
-            <th><button style="float:right" onclick="download()">Download</button></th>
+            <th><button id="del" style="float:right" onclick="del()">Delete</button></th>
         </tr>
     </table>
 
 </div>
 <script>
-    var params ={
-        username: getQueryString("name"),
-        album:getQueryString("album"),
-        photo:getQueryString("photo")
-    };
-    function download() {
-        $.ajax({
-            type: 'POST',
-            url: '/onephoto/download',
-            async: false,
-            data: params,
-            dataType: "json",
-            success: function (data) {
-                console.log("success");
-            }
-        });
+    if(getQueryString("friend")!=null){
+        var params ={
+            username: getQueryString("friend"),
+            album:getQueryString("album"),
+            photo:getQueryString("photo")
+        };
+        $('#del').remove();
     }
+    else{
+        var params ={
+            username: getQueryString("name"),
+            album:getQueryString("album"),
+            photo:getQueryString("photo")
+        };
+    }
+
 
         function del() {
             $.ajax({
@@ -113,6 +112,7 @@
         data:params,
         dataType: "json",
         success: function(data) {
+            alert(data.path);
             $("#onePhoto").attr("src",data.path);
         }
     });
