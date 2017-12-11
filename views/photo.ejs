@@ -135,7 +135,6 @@
         }
 
         function upload() {
-            console.log(count);
             if(count==0) {
                 $('#upload').html("<div class=\"htmleaf-container\">\n" +
                     "            <div class=\"wrapper\">\n" +
@@ -150,7 +149,7 @@
                 $("#input").fileinput({
                     language: 'zh', //设置语言
                     allowedFileExtensions: ['png', 'gif', 'jpg'],//接收的文件后缀
-                    uploadExtraData:{"name": getQueryString("name"), "album":getQueryString("album")},
+                    uploadExtraData:{"username": getQueryString("name"), "album":getQueryString("album")},
                     uploadUrl: '/photo/upload',
                     uploadAsync: true, //默认异步上传
                     showUpload: true, //是否显示上传按钮
@@ -216,7 +215,13 @@
                     content+="<img class=\"album\" " ;
                     content+="src="+src+">\n";
                     content+= "<p><a class=\"btn\"  role=\"button\" ";
-                    content+="href="+"/onephoto?name="+getQueryString("name")+"&friend="+getQueryString("friend")+"&album="+getQueryString("album")+"&photo="+data.names[i]+" >";
+                    if(getQueryString("friend")){
+                        content+="href="+"/onephoto?name="+getQueryString("name")+"&friend="+getQueryString("friend")+"&album="+getQueryString("album")+"&photo="+data.names[i]+"&id="+data.ids[i]+" >";
+                    }
+                    else{
+                        content+="href="+"/onephoto?name="+getQueryString("name")+"&album="+getQueryString("album")+"&photo="+data.names[i]+"&id="+data.ids[i]+" >";
+                    }
+
                     content+=data.names[i]+"</a></p>\n"
                     content+= "</div><!--/.col-xs-6.col-lg-4-->";
                 }

@@ -77,7 +77,8 @@
         var params ={
             username: getQueryString("friend"),
             album:getQueryString("album"),
-            photo:getQueryString("photo")
+            photo:getQueryString("photo"),
+            id:getQueryString("id")
         };
         $('#del').remove();
     }
@@ -85,10 +86,10 @@
         var params ={
             username: getQueryString("name"),
             album:getQueryString("album"),
-            photo:getQueryString("photo")
+            photo:getQueryString("photo"),
+            id:getQueryString("id")
         };
     }
-
 
         function del() {
             $.ajax({

@@ -3,6 +3,7 @@ var router = express.Router();
 var app=express();
 var fs=require('fs');
 var fdb=require('../helper/friend');
+var pdb=require('../helper/photo');
 var multer  = require('multer');
 var juedui="/Users/juaner/IdeaProjects/album/public/photo/";
 var storage = multer.diskStorage({
@@ -76,7 +77,10 @@ router.post('/upload',upload.single('album'),function(req,res){
         console.log('copy error');
     });
     var newPath="./public/photo/"+name+"/cover/"+album+"."+fileName.split(".")[1];
+    var path="/photo/"+name+"/"+album+"/"+fileName;
     fs.renameSync(juedui+fileName,newPath);
+    pdb.addPhoto(name,album,path,fileName.split(".")[0],function (result) {
+    });
     res.json({"success":"1"});
 });
 router.post('/isfollowed', function(req, res, next) {
