@@ -12,7 +12,6 @@ router.post('/activity', function(req, res, next) {
     var place=[];
     var id=[];
     var username=req.body.username;
-    console.log(name);
     db.getActivities(username,function (activity) {
         for(var i=0;i<activity.length;i++){
             name[i]=activity[i].name;
