@@ -98,37 +98,33 @@
 </div>
 
 
-<img id="test" src="\images\2.jpg" style=" table-layout: fixed;width: 100%; margin-top: 10px;">
+<!--<img id="test" src="\images\2.jpg" style=" table-layout: fixed;width: 100%; margin-top: 10px;">-->
 
 
 <div id="content">
-<img src="\images\1.jpg" style=" table-layout: fixed;width: 100%; margin-top: 10px;">
+<!--<img src="\images\1.jpg" style=" table-layout: fixed;width: 100%; margin-top: 10px;">-->
 
-<table style="margin-top: 5px;margin-bottom: 10px">
-    <tr>
-        <th><button style='margin-left: 5px'><span class="glyphicon glyphicon-heart"></span>1940</button></th>
-        <th style="width: 43%"></th>
-        <th> <img src="\images\logo.png" style="width: 60px;align:center" class="img-circle"></th>
-        <th style="width: 1%"></th>
-        <th> <p>juaner</p></th>
-        <th style="width: 43%"></th>
-        <th><button style="float:right">Download</button></th>
-    </tr>
-</table>
-</div>
-
-
-
+<!--<table style="margin-top: 5px;margin-bottom: 10px">-->
+    <!--<tr>-->
+        <!--<th><button style='margin-left: 5px'><span class="glyphicon glyphicon-heart"></span>1940</button></th>-->
+        <!--<th style="width: 43%"></th>-->
+        <!--<th> <img src="\images\logo.png" style="width: 60px;align:center" class="img-circle"></th>-->
+        <!--<th style="width: 1%"></th>-->
+        <!--<th> <p>juaner</p></th>-->
+        <!--<th style="width: 43%"></th>-->
+        <!--<th><button style="float:right">Download</button></th>-->
+    <!--</tr>-->
+<!--</table>-->
+<!--</div>-->
+</div><!--/.container-->
 <div  align="center" style="margin-top: 40px"><img src="\images\logo.png" style="width: 60px">
     <p>Make something awesome</p></div>
 
 
-
-</div><!--/.container-->
-
-
-
 <script type="text/javascript">
+    var params={
+        username:getQueryString("name")
+    }
     function hot() {
         location.href = "/hot?name="+getQueryString("name");
     }
@@ -154,42 +150,55 @@
         type: 'POST',
         url: '/home/photo',
         async: false,
+        data:params,
         dataType: "json",
         success: function(data) {
+            $(document).ready(function(){
+                console.log(data.ids.length);
+                var range = 50;             //距下边界长度/单位px
+                var elemt = 50;           //插入元素高度/单位px
+                var maxnum = data.ids.length;            //设置加载最多次数
+                var num = 0;
+                var totalheight = 0;
+                var main = $("#content");                     //主体元素
+                $(window).scroll(function(){
+                    var srollPos = $(window).scrollTop();    //滚动条距顶部距离(页面超出窗口的高度)
+                    //console.log("滚动条到顶部的垂直高度: "+$(document).scrollTop());
+                    //console.log("页面的文档高度 ："+$(document).height());
+                    //console.log('浏览器的高度：'+$(window).height());
+                    totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
+                    if(($(document).height()-range) <= totalheight  && num != maxnum) {
+                        var content="";
+                        content+="<img src=\"" ;
+                        content+= data.paths[num]+"\" style=\" table-layout: fixed;width: 100%; margin-top: 10px;\">\n" ;
+                        content+=    "<table style=\"margin-top: 5px;margin-bottom: 10px\">\n" ;
+                        content+=   "    <tr>\n" ;
+                        content+=    "        <th><button style='margin-left: 5px'><span class=\"glyphicon glyphicon-heart\"></span>" ;
+                        content+=data.loves[num]+"</button></th>\n" ;
+                        content+=   "        <th style=\"width: 43%\"></th>\n" ;
+                        content+=    "        <th> <img src=\"" ;
+                        content+=data.pros[num]+"\" style=\"width: 60px;align:center\" class=\"img-circle\"></th>\n" ;
+                        content+=   "        <th style=\"width: 1%\"></th>\n" ;
+                        content+=    "        <th> <a href='" ;
+                        if(data.users[num]!=getQueryString("name")) {
+                            content +="/album?name="+getQueryString("name")+"&friend="+data.users[num]+ "'>";
+                        }
+                        else{
+                            content +="/album?name="+getQueryString("name")+"'>";
+                        }
+                        content+=data.users[num]+"</a></th>\n" ;
+                        content+=    "        <th style=\"width: 43%\"></th>\n" ;
+                        content+=    "        <th><button style=\"float:right\">Download</button></th>\n" ;
+                        content+=    "    </tr>\n" ;
+                        content+=    "</table>";
 
-            document.getElementById("test").src="data:image/jpeg;bass64"+data.photo;
-        } // 注意不要在此行增加逗号
-    });
-    $(document).ready(function(){
-        var range = 50;             //距下边界长度/单位px
-        var elemt = 50;           //插入元素高度/单位px
-        var maxnum = 2000;            //设置加载最多次数
-        var num = 1;
-        var totalheight = 0;
-        var main = $("#content");
-        var src="\\images\\1.jpg";
-        num++;
-        //主体元素
-        $(window).scroll(function(){
-            var srollPos = $(window).scrollTop();    //滚动条距顶部距离(页面超出窗口的高度)
-            totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
-            if(($(document).height()-range) <= totalheight  && num != maxnum) {
-                main.append("<img src=\"\\images\\1.jpg\" style=\" table-layout: fixed;width: 100%; margin-top: 10px;\">\n" +
-                    "\n" +
-                    "<table style=\"margin-top: 5px;margin-bottom: 10px\">\n" +
-                    "    <tr>\n" +
-                    "        <th><button style='margin-left: 5px'><span class=\"glyphicon glyphicon-heart\"></span>1940</button></th>\n" +
-                    "        <th style=\"width: 43%\"></th>\n" +
-                    "        <th> <img src=\"\\images\\logo.png\" style=\"width: 60px;align:center\" class=\"img-circle\"></th>\n" +
-                    "        <th style=\"width: 1%\"></th>\n" +
-                    "        <th> <p>juaner</p></th>\n" +
-                    "        <th style=\"width: 43%\"></th>\n" +
-                    "        <th><button style=\"float:right\">Download</button></th>\n" +
-                    "    </tr>\n" +
-                    "</table>");
-                num++;
-            }
-        });
+                        main.append(content);
+                        num++;
+
+                    }
+                });
+            });
+        }
     });
 
     function getQueryString(name)

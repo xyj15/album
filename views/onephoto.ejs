@@ -63,10 +63,10 @@
     <img id="onePhoto" style="width: 100%">
     <table style="margin-top: 5px;margin-bottom: 10px">
         <tr>
-            <th><button style='margin-left: 5px'><span class="glyphicon glyphicon-heart"></span>1940</button></th>
-            <th style="width: 43%"></th>
+            <th id="love"></th>
+            <th style="width: 45%"></th>
             <th></th>
-            <th style="width: 43%"></th>
+            <th style="width: 45%"></th>
             <th><button id="del" style="float:right" onclick="del()">Delete</button></th>
         </tr>
     </table>
@@ -113,10 +113,60 @@
         data:params,
         dataType: "json",
         success: function(data) {
-            alert(data.path);
             $("#onePhoto").attr("src",data.path);
+            if(data.isloved > 0){
+                $("#love").html("<button id=\"loved\" onclick='unlove()' style='margin-left: 5px'><span class=\"glyphicon glyphicon-heart\"></span> "+data.love+" </button>");
+
+            }
+            else{
+                $("#love").html("<button id=\"loved\" onclick='love()' style='margin-left: 5px'><span class=\"glyphicon glyphicon-heart\"></span> "+data.love+" </button>");
+
+            }
+
         }
     });
+    function love() {
+        $.ajax({
+            type: 'POST',
+            url: '/onephoto/love',
+            async: false,
+            data:params,
+            dataType: "json",
+            success: function(data) {
+                if(data.success=="1") {
+                    if (getQueryString("friend")) {
+                        location.href = "/onephoto?name=" + getQueryString("name") + "&friend=" + getQueryString("friend") + "&album=" + getQueryString("album") + "&photo=" + getQueryString("photo") + "&id=" + getQueryString("id") ;
+                    }
+                    else {
+                        location.href = "/onephoto?name=" + getQueryString("name") + "&album=" + getQueryString("album") + "&photo=" + getQueryString("photo") + "&id=" + getQueryString("id") ;
+                    }
+                }
+
+            }
+        });
+    }
+
+    function unlove() {
+        $.ajax({
+            type: 'POST',
+            url: '/onephoto/unlove',
+            async: false,
+            data:params,
+            dataType: "json",
+            success: function(data) {
+                if(data.success=="1") {
+                    if (getQueryString("friend")) {
+                        location.href = "/onephoto?name=" + getQueryString("name") + "&friend=" + getQueryString("friend") + "&album=" + getQueryString("album") + "&photo=" + getQueryString("photo") + "&id=" + getQueryString("id") ;
+                    }
+                    else {
+                        location.href = "/onephoto?name=" + getQueryString("name") + "&album=" + getQueryString("album") + "&photo=" + getQueryString("photo") + "&id=" + getQueryString("id") ;
+                    }
+                }
+
+            }
+        });
+    }
+
     function hot() {
         location.href = "/hot?name="+getQueryString("name");
     }
