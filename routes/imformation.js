@@ -47,7 +47,7 @@ router.post('/edit', function(req, res, next) {
             }
             if(fileName!=""){
                 var path="/profile/"+fileName;
-                db.editPro(name, function (result) {
+                db.editPro(name,path, function (result) {
                     if (result == "success") {
                         success = 1;
                     }
