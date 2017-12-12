@@ -52,6 +52,7 @@
                         <li><a href="javascript:void(0)" onclick="album()">Album</a></li>
                         <li class="active"><a href="javascript:void(0)" onclick="myactivity()">Activity</a></li>
                         <li ><a href="javascript:void(0)" onclick="imformation()">Information</a></li>
+                        <li><a href="javascript:void(0)" onclick="logout()">logout</a></li>
                     </ul>
                 </li>
                 <form class="navbar-form navbar-right" role="search">
@@ -77,7 +78,7 @@
 <div class="jumbotron">
     <img id="profile"  width="150px" class="img-circle">
     <h1 id="hello">Hello, User!</h1>
-    <p>这个用户很懒什么都没留下。</p>
+    <p id="des">这个用户很懒什么都没留下。</p>
 </div>
 
 <div id="editActivity" style="margin-bottom: 20px">
@@ -123,7 +124,17 @@
         dataType: "json",
         success: function(data) {
             if(data.success==1) {
-                document.getElementById("profile").src=data.src;
+                if(data.src!=null){
+                    document.getElementById("profile").src=data.src;
+                }else{
+                    document.getElementById("profile").src="/profile/pro.png";
+                }
+                if(data.des!=null){
+                    alert(data.des);
+                    document.getElementById("des").innerText=data.des;
+                }else{
+                    document.getElementById("des").innerText="This user is lazy and writes nothing~";
+                }
             }
             else{
                 //alert(data.result);
@@ -170,6 +181,7 @@
         type: 'POST',
         url: '/myactivity/heldactivity',
         async: false,
+        data:para,
         dataType: "json",
         success: function(data) {
             var content="";
@@ -192,6 +204,7 @@
         type: 'POST',
         url: '/myactivity/joinedactivity',
         async: false,
+        data:para,
         dataType: "json",
         success: function(data) {
             var content="";
@@ -229,6 +242,9 @@
     }
     function imformation() {
         location.href = "/imformation?name="+getQueryString("name");
+    }
+    function logout() {
+        location.href = "/";
     }
     function del(id) {
         var params={

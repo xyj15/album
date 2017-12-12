@@ -52,6 +52,7 @@
                         <li><a href="javascript:void(0)" onclick="album()">Album</a></li>
                         <li><a href="javascript:void(0)" onclick="myactivity()">Activity</a></li>
                         <li><a href="javascript:void(0)" onclick="imformation()">Information</a></li>
+                        <li><a href="javascript:void(0)" onclick="logout()">logout</a></li>
                     </ul>
                 </li>
                 <form class="navbar-form navbar-right" role="search">
@@ -215,6 +216,9 @@
     }
     function imformation() {
         location.href = "/imformation?name="+getQueryString("name");
+    }
+    function logout() {
+        location.href = "/";
     }
     function getQueryString(name)
     {

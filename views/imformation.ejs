@@ -55,6 +55,7 @@
                         <li ><a href="javascript:void(0)" onclick="album()">Album</a></li>
                         <li><a href="javascript:void(0)" onclick="myactivity()">Activity</a></li>
                         <li class="active"><a href="javascript:void(0)" onclick="imformation()">Information</a></li>
+                        <li><a href="javascript:void(0)" onclick="logout()">logout</a></li>
                     </ul>
                 </li>
                 <form class="navbar-form navbar-right" role="search">
@@ -76,7 +77,7 @@
 <div class="jumbotron">
     <img id="profile"  width="150px" class="img-circle">
     <h1 id="hello">Hello, User!</h1>
-    <p>这个用户很懒什么都没留下。</p>
+    <p id="des">这个用户很懒什么都没留下。</p>
 </div>
 
 <div class="container">
@@ -93,6 +94,7 @@
 <div id="upload">
     <input type="password" placeholder="password" id="password">
     <input type="password" placeholder="passwordRepeat" id="passwordRepeat">
+    <input type="text" placeholder="description" id="description">
 </div>
 
 
@@ -114,7 +116,19 @@
             dataType: "json",
             success: function(data) {
                 if(data.success==1) {
-                    document.getElementById("profile").src=data.src;
+                    if(data.src!=null){
+                        document.getElementById("profile").src=data.src;
+                    }else{
+                        document.getElementById("profile").src="/profile/pro.png";
+                    }
+                    alert(data.des);
+                    if(data.des!=null){
+
+                        document.getElementById("des").innerText=data.des;
+                    }else{
+                        document.getElementById("des").innerText="This user is lazy and writes nothing~";
+                    }
+
                 }
                 else{
                     //alert(data.result);
@@ -125,6 +139,7 @@
             var params = {
                 username: getQueryString("name"),
                 password: $('#password').val(),
+                description:$('#description').val(),
                 passwordRepeat: $('#passwordRepeat').val(),
             };
             $.ajax({
@@ -194,7 +209,9 @@
             location.href = "/imformation?name="+getQueryString("name");
         }
 
-
+        function logout() {
+            location.href = "/";
+        }
         function getQueryString(name)
         {
             var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");

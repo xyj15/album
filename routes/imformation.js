@@ -30,14 +30,15 @@ router.post('/edit', function(req, res, next) {
     var name=req.body.username;
     var pwd=req.body.password;
     var pwdRepeat=req.body.passwordRepeat;
-    console.log(fileName);
+    var des=req.body.description;
+    console.log(des);
     var result;
     var success;
     if(pwd!=pwdRepeat){
         res.json({result:"Passwords does not match!",success:0})
     }
     if(pwd!="") {
-        db.editUser(name, pwd, function (result) {
+        db.editUser(name, pwd,des, function (result) {
             if (result == "success") {
                 success = 1;
             }
@@ -46,7 +47,7 @@ router.post('/edit', function(req, res, next) {
             }
             if(fileName!=""){
                 var path="/profile/"+fileName;
-                db.editPro(name, path, function (result) {
+                db.editPro(name, function (result) {
                     if (result == "success") {
                         success = 1;
                     }
@@ -78,20 +79,12 @@ router.post('/profile',function(req,res){
     var name=req.body.username;
     var src;
     var success;
-    db.getPro(name,function (path) {
-        if(path=="error"){
-            src="error!";
-            success=0;
-        }
-        else if(path=="null") {
-            src = "Unknown name!";
-            success=0;
-        }
-        else{
-            src=path;
+    var des;
+    db.getPro(name,function (row) {
+            src=row.profile;
+            des=row.description;
             success=1;
-        }
-        res.json({src:path,success:success});
+        res.json({src:src,success:success,des:des});
     });
 
 });

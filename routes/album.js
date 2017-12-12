@@ -47,18 +47,19 @@ router.post('/file_upload', function (req, res) {
 
 router.post('/photo', function(req, res) {
   var name=req.body.username;
-  console.log("aa"+name);
   var path="./public/photo/"+name+"/cover/";
   var paths=[];
   var names=[];
   var elePath="/photo/"+name+"/cover/";
     var pa = fs.readdirSync(path);
     pa.forEach(function(ele,index){
-        paths.push(elePath+ele);
-        names.push(ele.split(".")[0]);
+        if(ele!=".DS_Store") {
+            paths.push(elePath + ele);
+            names.push(ele.split(".")[0]);
+        }
 
     })
-    console.log(paths.length);
+    console.log(paths);
     res.json({"paths":paths,"names":names});
 
 });
@@ -66,6 +67,9 @@ router.post('/upload',upload.single('album'),function(req,res){
     var name=req.body.name;
     var album=req.body.album;
     var fileName=req.file.originalname;
+    if(!fs.existsSync("./public/photo/"+name+"/")){
+        fs.mkdirSync("./public/photo/"+name+"/");
+    }
     fs.mkdirSync("./public/photo/"+name+"/"+album+"/");
     var readStream = fs.createReadStream(juedui+fileName);
     var writeStream = fs.createWriteStream(juedui+name+"/"+album+"/"+fileName);
@@ -76,6 +80,9 @@ router.post('/upload',upload.single('album'),function(req,res){
     readStream.on('error', function () {
         console.log('copy error');
     });
+    if(!fs.existsSync("./public/photo/"+name+"/cover/")){
+        fs.mkdirSync("./public/photo/"+name+"/cover/");
+    }
     var newPath="./public/photo/"+name+"/cover/"+album+"."+fileName.split(".")[1];
     var path="/photo/"+name+"/"+album+"/"+fileName;
     fs.renameSync(juedui+fileName,newPath);

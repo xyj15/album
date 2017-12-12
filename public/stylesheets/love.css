@@ -53,3 +53,29 @@
     color: #ffbbbc;
 
 }
+#del {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: 0;
+    background-color: #53e3a6;
+    border: 0;
+    padding: 10px 15px;
+    margin: 0 auto 10px auto;
+    display: block;
+    color: white;
+    border-radius: 3px;
+    width: 100px;
+    cursor: pointer;
+    font-size: 18px;
+    -webkit-transition-duration: 0.25s;
+    transition-duration: 0.25s;
+}
+#del:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #53e3a6;
+}
+#del:focus {
+    background-color: white;
+    color: #53e3a6;
+}

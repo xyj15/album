@@ -36,14 +36,7 @@ router.post('/photo', function(req, res) {
     var paths=[];
     var names=[];
     var ids=[];
-    // var elePath="/photo/"+name+"/"+album+"/";
-    // var pa = fs.readdirSync(path);
-    // pa.forEach(function(ele,index){
-    //     if(ele!=".DS_Store") {
-    //         paths.push(elePath + ele);
-    //         names.push(ele.split(".")[0]);
-    //     }
-    // })
+
     db.getPhotos(name,album,function (row) {
         for(var i=0;i<row.length;i++){
             paths[i]=row[i].path;

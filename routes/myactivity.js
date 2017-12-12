@@ -8,12 +8,13 @@ router.get('/', function(req, res) {
 });
 
 router.post('/heldactivity', function(req, res, next) {
-    var name="a";
+    var username=req.body.username;
     var time=[];
     var name=[];
     var place=[];
     var id=[];
-    db.getHeldActivities("a",function (activity) {
+    console.log(username);
+    db.getHeldActivities(username,function (activity) {
         for(var i=0;i<activity.length;i++){
             name[i]=activity[i].name;
             time[i]=activity[i].time;
@@ -24,7 +25,7 @@ router.post('/heldactivity', function(req, res, next) {
     });
 });
 router.post('/joinedactivity', function(req, res, next) {
-    var username="a";
+    var username=req.body.username;
     var time=[];
     var name=[];
     var place=[];

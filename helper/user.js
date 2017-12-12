@@ -35,9 +35,10 @@ exports.addUser=function (name,password,callback) {
         });
     
 };
-exports.editUser=function (name,password,callback) {
+exports.editUser=function (name,password,des,callback) {
     var db=new sqlite3.Database(location);
-    db.run("UPDATE user SET password=? WHERE name=?", [password,name], function(error){
+    console.log(des);
+    db.run("UPDATE user SET password=?,description=? WHERE name=?", [password,des,name], function(error){
             if (error){
                 console.log(error);
                 callback(error);
@@ -50,7 +51,6 @@ exports.editPro=function (name,profile,callback) {
     var db=new sqlite3.Database(location);
     db.run("UPDATE user SET profile=? WHERE name=?", [profile,name], function(error){
         if (error){
-            console.log(error);
             callback(error);
         } else {
             callback("success");
@@ -60,10 +60,10 @@ exports.editPro=function (name,profile,callback) {
 exports.getPro= function (name,callback) {
     var db=new sqlite3.Database(location);
     var pro;
-    db.all("SELECT profile FROM user WHERE name = ? ",[name],function (err,row){
+    db.all("SELECT profile,description FROM user WHERE name = ? ",[name],function (err,row){
         if(!err) {
             if(typeof(row[0])!='undefined') {
-                pro = row[0].profile;
+                pro = row[0];
             }
             else {
                 pro = "null";
@@ -72,7 +72,6 @@ exports.getPro= function (name,callback) {
         else{
             pro="error"
         }
-
         callback(pro);
     })
     db.close();

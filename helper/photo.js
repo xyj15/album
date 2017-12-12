@@ -79,8 +79,9 @@ exports.delLoveInPhoto= function (id,callback) {
 };
 exports.addPhoto=function (user,album,path,name,callback) {
     var db=new sqlite3.Database(location);
-    db.run("INSERT INTO photo (user,album,path,name) VALUES (?, ?,?,?);",
-        [user,album,path,name], function(error){
+    var love=0;
+    db.run("INSERT INTO photo (user,album,path,name,love) VALUES (?, ?,?,?,?);",
+        [user,album,path,name,love], function(error){
             if (error){
                 console.log(error);
                 callback(error);
