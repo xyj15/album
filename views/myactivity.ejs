@@ -130,7 +130,6 @@
                     document.getElementById("profile").src="/profile/pro.png";
                 }
                 if(data.des!=null){
-                    alert(data.des);
                     document.getElementById("des").innerText=data.des;
                 }else{
                     document.getElementById("des").innerText="This user is lazy and writes nothing~";
@@ -163,7 +162,6 @@
             place:$('#activityPlace').val(),
             id:id
         }
-        console.log(params);
         $.ajax({
             type: 'POST',
             url: '/myactivity/edit',
@@ -218,7 +216,6 @@
                 content+= data.id[i]+")'>Delete</button>";
                 content+="</div><!--/.col-xs-6.col-lg-4-->";
             }
-            console.log(content);
             $('#joinedactivity').html(content);
         }
     });

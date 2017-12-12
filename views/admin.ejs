@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>admin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="\javascripts\jquery.js"></script>
+
+
+</head>
+<input placeholder="pwd" id="pwd" type="password">
+<table style="text-align: center" id="users">
+    <tr>
+        <th>name</th>
+        <th><button>editPwd</button></th>
+        <th><button>Delete</button></th>
+    </tr>
+    <tr>
+        <th>name</th>
+        <th><button>editPwd</button></th>
+        <th><button>Delete</button></th>
+    </tr>
+</table>
+
+<script>
+    $.ajax({
+        type: 'POST',
+        url: '/admin/users',
+        async: false,
+        dataType: "json",
+        success: function(data) {
+            var content="";
+            for(var i=0;i<data.names.length;i++){
+                content+="<tr>\n" ;
+                content+=   "        <th>" ;
+                content+=data.names[i]+    "</th>" ;
+                content+=    "        <th><button onclick='edit(\"" ;
+                content+=data.names[i] +"\")'>editPwd</button></th>";
+                content+=   "        <th><button onclick='del(\"" ;
+                content+=data.names[i]+"\")'>Delete</button></th>" ;
+                content+=    "    </tr>";
+
+            }
+
+            $("#users").html(content);
+        }
+    });
+
+    function del(name) {
+        var para={
+            username:name
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/admin/del',
+            async: false,
+            data:para,
+            dataType: "json",
+            success: function(data) {
+                location.href="/admin";
+            }
+        });
+    }
+    function edit(name) {
+        var para={
+            username:name,
+            password:$('#pwd').val()
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/admin/edit',
+            async: false,
+            data:para,
+            dataType: "json",
+            success: function(data) {
+                if(data.success=="1") {
+                    location.href = "/admin";
+                }
+                else{
+                    alert("password is null! ");
+                }
+
+            }
+        });
+    }
+</script>

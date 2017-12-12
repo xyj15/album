@@ -37,7 +37,12 @@
             dataType: "json",
             success: function(data) {
                 if(data.success==1) {
-                    window.location.href = "/home?name="+params.username;
+                    if(params.username!="admin") {
+                        window.location.href = "/home?name=" + params.username;
+                    }
+                    else{
+                        window.location.href = "/admin" ;
+                    }
                 }
                 else{
                     alert(data.result);

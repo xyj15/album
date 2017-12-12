@@ -76,3 +76,31 @@ exports.getPro= function (name,callback) {
     })
     db.close();
 };
+exports.editPwd=function (name,password,callback) {
+    var db=new sqlite3.Database(location);
+    db.run("UPDATE user SET password=? WHERE name=?", [password,name], function(error){
+        if (error){
+            console.log(error);
+            callback(error);
+        } else {
+            callback("success");
+        }
+    });
+};
+exports.delUser=function (name,callback) {
+    var db=new sqlite3.Database(location);
+    db.run("DELETE FROM user WHERE name=? ", [name], function(error){
+        if (error){
+            callback(error);
+        } else {
+            callback("success");
+        }
+    });
+};
+exports.getUsers= function (callback) {
+    var db=new sqlite3.Database(location);
+    db.all("SELECT * FROM user where name<>'admin' ",function (err,row){
+        callback(row);
+    })
+    db.close();
+};

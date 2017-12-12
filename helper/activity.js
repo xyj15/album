@@ -12,7 +12,6 @@ exports.getActivities= function (name,callback) {
 exports.getJoinedActivities= function (name,callback) {
     var db=new sqlite3.Database(location);
         db.all("SELECT * FROM activity where id in(select activityId from joinActivity where name = ? )", [name], function (err, row) {
-            console.log(row);
             callback(row);
         });
     db.close();
@@ -64,7 +63,7 @@ exports.joinActivity=function (name,activityId,callback) {
 exports.delActivity=function (id,callback) {
     var db=new sqlite3.Database(location);
     console.log(id);
-    db.run("DELETE FROM activity WHERE id=? ", [id], function(error){
+    db.run("DELETE FROM activity WHERE id=?  ", [id], function(error){
             if (error){
                 console.log(error);
                 callback(error);
@@ -89,6 +88,18 @@ exports.editActivity=function (id,name,time,place,callback) {
 exports.delJoinedActivity=function (id,name,callback) {
     var db=new sqlite3.Database(location);
     db.run("DELETE FROM joinActivity WHERE activityId=? and name=? ", [id,name], function(error){
+        if (error){
+            callback(error);
+        } else {
+            callback("success");
+        }
+    });
+};
+exports.delActivityRelationship=function (id,callback) {
+    var db=new sqlite3.Database(location);
+    console.log("aaaa"+id);
+    db.run("DELETE FROM joinActivity WHERE activityId=?", [id], function(error){
+
         if (error){
             callback(error);
         } else {

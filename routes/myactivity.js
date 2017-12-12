@@ -13,7 +13,7 @@ router.post('/heldactivity', function(req, res, next) {
     var name=[];
     var place=[];
     var id=[];
-    console.log(username);
+
     db.getHeldActivities(username,function (activity) {
         for(var i=0;i<activity.length;i++){
             name[i]=activity[i].name;
@@ -47,11 +47,16 @@ router.post('/del', function(req, res, next) {
     db.delActivity(id,function (result) {
         if(result=="success"){
             success=1;
+            db.delActivityRelationship(id,function (err) {
+                res.json({success:success});
+
+            });
         }
         else {
             success=0;
+            res.json({success:success});
         }
-        res.json({success:success});
+
     })
 
 });
@@ -78,13 +83,11 @@ router.post('/delJoined', function(req, res, next) {
     var name=req.body.name;
     var success;
     db.delJoinedActivity(id,name,function (result) {
-        if(result=="success"){
-            success=1;
-        }
-        else {
-            success=0;
-        }
-        res.json({success:success});
+        success=1;
+        console.log("aaa");
+
+        res.json({success:"1"});
+
     })
 
 });
