@@ -136,12 +136,12 @@
         url: '/hot/photo',
         async: false,
         dataType: "json",
-        success: function(data) {
+        success: function(id) {
             $(document).ready(function(){
-                console.log(data.ids.length);
+                console.log(id.ids.length);
                 var range = 50;             //距下边界长度/单位px
                 var elemt = 50;           //插入元素高度/单位px
-                var maxnum = data.ids.length;            //设置加载最多次数
+                var maxnum = id.ids.length;            //设置加载最多次数
                 var num = 0;
                 var totalheight = 0;
                 var main = $("#content");                     //主体元素
@@ -152,38 +152,101 @@
                     //console.log('浏览器的高度：'+$(window).height());
                     totalheight = parseFloat($(window).height()) + parseFloat(srollPos);
                     if(($(document).height()-range) <= totalheight  && num != maxnum) {
-                        var content="";
-                        content+="<img src=\"" ;
-                        content+= data.paths[num]+"\" style=\" table-layout: fixed;width: 100%; margin-top: 10px;\">\n" ;
-                        content+=    "<table style=\"margin-top: 5px;margin-bottom: 10px\">\n" ;
-                        content+=   "    <tr>\n" ;
-                        content+=    "        <th><button style='margin-left: 5px'><span class=\"glyphicon glyphicon-heart\"></span>" ;
-                        content+=data.loves[num]+"</button></th>\n" ;
-                        content+=   "        <th style=\"width: 43%\"></th>\n" ;
-                        content+=    "        <th> <img src=\"" ;
-                        content+=data.pros[num]+"\" style=\"width: 60px;align:center\" class=\"img-circle\"></th>\n" ;
-                        content+=   "        <th style=\"width: 1%\"></th>\n" ;
-                        content+=    "        <th> <a href='" ;
-                        if(data.users[num]!=getQueryString("name")) {
-                            content +="/album?name="+getQueryString("name")+"&friend="+data.users[num]+ "'>";
+                        var pa={
+                            id:id.ids[num],
+                            username:getQueryString("name")
                         }
-                        else{
-                            content +="/album?name="+getQueryString("name")+"'>";
-                        }
-                        content+=data.users[num]+"</a></th>\n" ;
-                        content+=    "        <th style=\"width: 43%\"></th>\n" ;
-                        content+=    "        <th><button style=\"float:right\">Download</button></th>\n" ;
-                        content+=    "    </tr>\n" ;
-                        content+=    "</table>";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/onephoto/onephoto',
+                            async: false,
+                            data:pa,
+                            dataType: "json",
+                            success: function(data) {
+                                var content="";
+                                content+="<img src=\"" ;
+                                content+= id.paths[num]+"\" style=\" table-layout: fixed;width: 100%; margin-top: 10px;\">\n" ;
+                                content+=    "<table style=\"margin-top: 5px;margin-bottom: 10px\">\n" ;
+                                content+=   "    <tr>\n" ;
+                                if(data.isloved>0) {
+                                    content += "        <th><button style='margin-left: 5px' onclick='unlove(" ;
+                                    content += id.ids[num]+")'><span class=\"glyphicon glyphicon-heart\"></span>";
+                                    content += id.loves[num] + "</button></th>\n";
+                                }
+                                else{
+                                    content += "        <th><button style='margin-left: 5px' onclick='love(" ;
+                                    content += id.ids[num]+    ")'><span class=\"glyphicon glyphicon-heart\"></span>";
+                                    content += id.loves[num] + "</button></th>\n";
+                                }
+                                content+=   "        <th style=\"width: 43%\"></th>\n" ;
+                                content+=    "        <th> <img src=\"" ;
+                                content+=id.pros[num]+"\" style=\"width: 60px;align:center\" class=\"img-circle\"></th>\n" ;
+                                content+=   "        <th style=\"width: 1%\"></th>\n" ;
+                                content+=    "        <th> <a href='" ;
+                                if(id.users[num]!=getQueryString("name")) {
+                                    content +="/album?name="+getQueryString("name")+"&friend="+id.users[num]+ "'>";
+                                }
+                                else{
+                                    content +="/album?name="+getQueryString("name")+"'>";
+                                }
+                                content+=id.users[num]+"</a></th>\n" ;
+                                content+=    "        <th style=\"width: 43%\"></th>\n" ;
+                                content+=    "        <th><button style=\"float:right\">Download</button></th>\n" ;
+                                content+=    "    </tr>\n" ;
+                                content+=    "</table>";
+                                main.append(content);
+                                num++;
 
-                        main.append(content);
-                        num++;
+                            }
+                        });
+
+
 
                     }
                 });
             });
         }
     });
+    function love(id) {
+        var lpa={
+            id:id,
+            username:getQueryString("name")
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/onephoto/love',
+            async: false,
+            data:lpa,
+            dataType: "json",
+            success: function(data) {
+                location.href = "/hot?name=" + getQueryString("name")  ;
+
+
+
+            }
+        });
+    }
+
+    function unlove(id) {
+        var lpa={
+            id:id,
+            username:getQueryString("name")
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/onephoto/unlove',
+            async: false,
+            data:lpa,
+            dataType: "json",
+            success: function(data) {
+                if(data.success=="1") {
+                    location.href = "/hot?name=" + getQueryString("name")  ;
+
+                }
+
+            }
+        });
+    }
 
     function getQueryString(name)
     {

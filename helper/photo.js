@@ -19,7 +19,6 @@ exports.getPhoto= function (id,callback) {
 
 exports.getLove= function (id,name,callback) {
     var db = new sqlite3.Database(location);
-
     db.all("SELECT count(*) as count from love where photoId=? and user=?", [id,name], function (err, row) {
         callback(row[0].count);
     });
