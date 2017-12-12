@@ -7,13 +7,12 @@
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
 
     <![endif]-->
     <link href="\stylesheets\navbar.css" rel="stylesheet" type="text/css" >
     <link href="\stylesheets\album.css" rel="stylesheet" type="text/css" >
+    <link href="\stylesheets\love.css" rel="stylesheet" type="text/css" >
     <script type="text/javascript" src="\javascripts\jquery.js"></script>
     <script type="text/javascript" src="\javascripts\bootstrap.min.js"></script>
 </head>
@@ -119,7 +118,7 @@
 
             }
             else{
-                $("#love").html("<button id=\"loved\" onclick='love()' style='margin-left: 5px'><span class=\"glyphicon glyphicon-heart\"></span> "+data.love+" </button>");
+                $("#love").html("<button id=\"unloved\" onclick='love()' style='margin-left: 5px'><span class=\"glyphicon glyphicon-heart\"></span> "+data.love+" </button>");
 
             }
 

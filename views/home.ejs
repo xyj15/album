@@ -21,6 +21,7 @@
     <![endif]-->
     <link href="\stylesheets\navbar.css" rel="stylesheet" type="text/css" >
     <link href="\stylesheets\album.css" rel="stylesheet" type="text/css" >
+    <link href="\stylesheets\love.css" rel="stylesheet" type="text/css" >
     <script type="text/javascript" src="\javascripts\jquery.js"></script>
     <script type="text/javascript" src="\javascripts\bootstrap.min.js"></script>
 
@@ -168,16 +169,16 @@
                                 content+=    "<table style=\"margin-top: 5px;margin-bottom: 10px\">\n" ;
                                 content+=   "    <tr>\n" ;
                                 if(data.isloved>0) {
-                                    content += "        <th><button style='margin-left: 5px' onclick='unlove(" ;
+                                    content += "        <th><button id='loved' style='margin-left: 5px' onclick='unlove(" ;
                                     content += id.ids[num]+")'><span class=\"glyphicon glyphicon-heart\"></span>";
                                     content += id.loves[num] + "</button></th>\n";
                                 }
                                 else{
-                                    content += "        <th><button style='margin-left: 5px' onclick='love(" ;
+                                    content += "        <th><button id=unloved style='margin-left: 5px' onclick='love(" ;
                                     content += id.ids[num]+    ")'><span class=\"glyphicon glyphicon-heart\"></span>";
                                     content += id.loves[num] + "</button></th>\n";
                                 }
-                                content+=   "        <th style=\"width: 43%\"></th>\n" ;
+                                content+=   "        <th style=\"width: 40%\"></th>\n" ;
                                 content+=    "        <th> <img src=\"" ;
                                 content+=id.pros[num]+"\" style=\"width: 60px;align:center\" class=\"img-circle\"></th>\n" ;
                                 content+=   "        <th style=\"width: 1%\"></th>\n" ;
@@ -189,8 +190,7 @@
                                     content +="/album?name="+getQueryString("name")+"'>";
                                 }
                                 content+=id.users[num]+"</a></th>\n" ;
-                                content+=    "        <th style=\"width: 43%\"></th>\n" ;
-                                content+=    "        <th><button style=\"float:right\">Download</button></th>\n" ;
+                                content+=    "        <th style=\"width: 50%\"></th>\n" ;
                                 content+=    "    </tr>\n" ;
                                 content+=    "</table>";
                                 main.append(content);
@@ -218,8 +218,6 @@
             dataType: "json",
             success: function(data) {
                 location.href = "/home?name=" + getQueryString("name")  ;
-
-
 
             }
         });

@@ -14,8 +14,6 @@
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
 
     <!--[if lt IE 9]>
@@ -24,6 +22,7 @@
     <![endif]-->
     <link href="\stylesheets\navbar.css" rel="stylesheet" type="text/css" >
     <link href="\stylesheets\album.css" rel="stylesheet" type="text/css" >
+    <link href="\stylesheets\friend.css" rel="stylesheet" type="text/css" >
     <script type="text/javascript" src="\javascripts\jquery.js"></script>
     <script type="text/javascript" src="\javascripts\bootstrap.min.js"></script>
     <script type="text/javascript" src="\javascripts\fileinput.min.js"></script>
@@ -83,8 +82,8 @@
 
 
     <div class="btn-group btn-group-lg">
-        <button  type="button" onclick="following()">following</button>
-        <button  type="button" onclick="follower()">follower</button>
+        <button id="following"  type="button" onclick="following()">following</button>
+        <button id="follower"  type="button" onclick="follower()">follower</button>
     </div>
 
 
@@ -112,6 +111,7 @@
             data: para,
             dataType: "json",
             success: function(data) {
+                $('#follower')
                 var content="";
                 for(var i=0;i<data.names.length;i++){
                     content+="<tr style='font-size: 18px'>";
@@ -141,7 +141,7 @@
                     content+="<tr style='font-size: 18px'>";
                     content+="<th><img src=" ;
                     content+=data.pros[i]+" width=\"150px\" class=\"img-circle\"></th>" ;
-                    content+="<th style='color:#53e3a6'><a>" ;
+                    content+="<th ><a style='color:#53e3a6'>" ;
                     content+=data.names[i]+"</a><br><p style='color:#ffbbbc'>这个用户很懒</p></th>\n" ;
                     content+="</tr>";
                     content+="<br>";
